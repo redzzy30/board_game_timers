@@ -1,4 +1,7 @@
 String formatTime(int seconds) {
   final duration = Duration(seconds: seconds);
-  return "${duration.inMinutes}:${duration.inSeconds.remainder(60)}";
+  final mm = duration.inMinutes;
+  final ss = duration.inSeconds.remainder(60);
+  
+  return "${mm.toString().padLeft(2, '0')}:${ss.toString().padLeft(2, '0')}";
 }
