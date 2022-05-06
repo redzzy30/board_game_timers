@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:board_game_timer/components/bottom_nav.dart';
+import 'package:board_game_timer/player_timer.dart';
+import 'package:board_game_timer/provider/timer_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'components/timer_tile.dart';
+import 'helpers/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,21 +19,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Board Game Timers',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return ChangeNotifierProvider<TimerModel>(
+      create: (BuildContext context) {
+        final model = TimerModel();
+
+        model.add("Jefferson", const TimerStrategy(totalTime: 1000));
+        model.add("Romek", const TimerStrategy(totalTime: 1500));
+        model.add("Foxtrot", const TimerStrategy(totalTime: 500, timePerMove: 5));
+
+        return model;
+      },
+      child: MaterialApp(
+        title: 'Board Game Timers',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -53,6 +70,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  @override
+  void initState() {
+
+    super.initState();
+  }
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -66,6 +89,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final model = context.watch<TimerModel>();
+
+    final tiles = model.players.map((player) {
+      return TimerTile(
+        state: TimerTileState.active,
+        playerName: player.playerName,
+        bigText: formatTime(player.remainingMoveTime),
+        smallText: formatTime(player.remainingTime),
+      );
+    });
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -75,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: const Color(0xFF1e1e24),
       body: Container(
-        margin: EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
         child: Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
@@ -95,14 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // center the children vertically; the main axis here is the vertical
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
-            children: TimerTileState.values.map((value) {
-              return TimerTile(
-                state: value,
-                playerName: "Player",
-                bigText: "10:00",
-                smallText: "25:00",
-              );
-            }).toList(),
+            children: tiles.toList()
           ),
         ),
       ),

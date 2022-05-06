@@ -3,27 +3,27 @@ import 'package:flutter/material.dart';
 
 enum TimerTileState { active, awaiting, eliminated, nonInGame }
 
-class TimerTileColors {
+class _TimerTileColors {
   final Color color;
   final Color textColor;
 
-  const TimerTileColors(this.color, this.textColor);
+  const _TimerTileColors(this.color, this.textColor);
 }
 
 const _textColorMap = {
-  TimerTileState.active: TimerTileColors(
+  TimerTileState.active: _TimerTileColors(
     AppColors.activeBackground,
     AppColors.activeForeground,
   ),
-  TimerTileState.awaiting: TimerTileColors(
+  TimerTileState.awaiting: _TimerTileColors(
     AppColors.inactiveBackground,
     AppColors.inactiveForeground,
   ),
-  TimerTileState.eliminated: TimerTileColors(
+  TimerTileState.eliminated: _TimerTileColors(
     AppColors.eliminatedBackground,
     AppColors.eliminatedForeground,
   ),
-  TimerTileState.nonInGame: TimerTileColors(
+  TimerTileState.nonInGame: _TimerTileColors(
     AppColors.inactiveBackground,
     AppColors.inactiveForeground,
   ),
