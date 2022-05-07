@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({Key? key}) : super(key: key);
+  final List<Widget> icons;
+
+  const BottomNav({this.icons = const [], Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(clipBehavior: Clip.none, children: [
       Container(
         height: 64,
-        color: const Color(0xFFF72585),
+        padding: const EdgeInsets.only(left: 16, right: 16),
+        color: Theme
+            .of(context)
+            .primaryColor,
+       child: Row(
+         children: icons
+       ),
       ),
       Positioned(
         height: 128,
