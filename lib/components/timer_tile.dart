@@ -1,7 +1,7 @@
 import 'package:board_game_timer/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../provider/player.dart';
+import '../model/player.dart';
 
 enum TimerTileState { active, awaiting, eliminated, nonInGame }
 

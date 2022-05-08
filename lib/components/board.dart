@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../helpers/utils.dart';
-import '../provider/player.dart';
+import '../model/player.dart';
 import '../provider/timer_model.dart';
 
 /// Displays the players' timers
