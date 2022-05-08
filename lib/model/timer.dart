@@ -15,6 +15,8 @@ class Timer {
 
   TimerContent get content => _strategy.createContent(_state);
 
+  TimerState get state => _state;
+
   bool get hasLost => _state == TimerState.lost;
 
   void reset() {
@@ -23,17 +25,17 @@ class Timer {
   }
 
   void startTurn() {
-    _ensureNotLost();
-
-    _state = TimerState.active;
-    _strategy.onTurnStart();
+    if (_state != TimerState.lost) {
+      _state = TimerState.active;
+      _strategy.onTurnStart();
+    }
   }
 
   void endTurn() {
-    _ensureNotLost();
-
-    _state = TimerState.inactive;
-    _strategy.onTurnEnd();
+    if (_state != TimerState.lost) {
+      _state = TimerState.inactive;
+      _strategy.onTurnEnd();
+    }
   }
 
   void doTick() {

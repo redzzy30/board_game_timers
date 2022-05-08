@@ -1,13 +1,11 @@
 import 'package:board_game_timer/components/board.dart';
 import 'package:board_game_timer/components/bottom_nav.dart';
 import 'package:board_game_timer/components/creator_dialog.dart';
-import 'package:board_game_timer/player_timer.dart';
-import 'package:board_game_timer/provider/timer_model.dart';
+import 'package:board_game_timer/model/timer.dart';
+import 'package:board_game_timer/model/timer_manager.dart';
+import 'package:board_game_timer/model/timer_strategy.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'components/timer_tile.dart';
-import 'helpers/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,31 +17,25 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TimerModel>(
+    return ChangeNotifierProvider<TimerManager>(
       create: (BuildContext context) {
-        final model = TimerModel();
+        final manager = TimerManager();
 
-        model.add("Jefferson", const TimerStrategy(totalTime: 1000));
-        model.add("Charlie", const TimerStrategy(totalTime: 1500));
-        model.add("Foxtrot", const TimerStrategy(totalTime: 500, timePerMove: 5));
-        model.add("Omega", const TimerStrategy(totalTime: 500, timePerMove: 5));
-        model.add("Alfa", const TimerStrategy(totalTime: 500, timePerMove: 5));
+        manager.addTimer(Timer("Label 1", OnlyMoveTimeStrategy(100)));
+        manager.addTimer(Timer("Label 2", OnlyMoveTimeStrategy(3)));
+        manager.addTimer(Timer("Label 3", OnlyMoveTimeStrategy(15)));
 
-        return model;
+        return manager;
       },
       child: MaterialApp(
         title: 'Board Game Timers',
         darkTheme: ThemeData(
-          primarySwatch: Colors.pink,
-          indicatorColor: Colors.white,
-          hintColor: Colors.white,
-
-          inputDecorationTheme: const InputDecorationTheme(
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white)
-            )
-          )
-        ),
+            primarySwatch: Colors.pink,
+            indicatorColor: Colors.white,
+            hintColor: Colors.white,
+            inputDecorationTheme: const InputDecorationTheme(
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white)))),
         themeMode: ThemeMode.dark,
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
@@ -68,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFF1e1e24),
       body: const Board(),
@@ -77,9 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              showDialog(context: context, builder: (context) {
-                return CreatorDialog();
-              });
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return CreatorDialog();
+                  });
             },
           ),
           const Icon(

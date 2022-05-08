@@ -1,9 +1,6 @@
 import 'package:board_game_timer/colors.dart';
+import 'package:board_game_timer/model/timer_state.dart';
 import 'package:flutter/material.dart';
-
-import '../model/player.dart';
-
-enum TimerTileState { active, awaiting, eliminated, nonInGame }
 
 class _TimerTileColors {
   final Color color;
@@ -13,21 +10,17 @@ class _TimerTileColors {
 }
 
 const _textColorMap = {
-  TimerTileState.active: _TimerTileColors(
+  TimerState.active: _TimerTileColors(
     AppColors.activeBackground,
     AppColors.activeForeground,
   ),
-  TimerTileState.awaiting: _TimerTileColors(
+  TimerState.inactive: _TimerTileColors(
     AppColors.inactiveBackground,
     AppColors.inactiveForeground,
   ),
-  TimerTileState.eliminated: _TimerTileColors(
+  TimerState.lost: _TimerTileColors(
     AppColors.eliminatedBackground,
     AppColors.eliminatedForeground,
-  ),
-  TimerTileState.nonInGame: _TimerTileColors(
-    AppColors.inactiveBackground,
-    AppColors.inactiveForeground,
   ),
 };
 
@@ -35,7 +28,7 @@ class TimerTile extends StatelessWidget {
   final String playerName;
   final String bigText;
   final String smallText;
-  final TimerTileState state;
+  final TimerState state;
 
   const TimerTile({
     required this.state,

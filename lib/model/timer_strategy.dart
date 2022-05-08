@@ -33,7 +33,7 @@ class OnlyMoveTimeStrategy extends TimerStrategy {
   void doTick() => _remainingTime--;
 
   @override
-  bool checkIfLost() => _remainingTime < 0;
+  bool checkIfLost() => _remainingTime <= 0;
 
   @override
   TimerContent createContent(TimerState state) =>
